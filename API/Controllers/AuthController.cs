@@ -17,7 +17,13 @@ namespace IdentityService.API.Controllers
         {
             _userRepository = userRepository;
         }
-
+        /// <summary>
+        /// Registers a new user with the provided registration details.
+        /// </summary>
+        /// <param name="userDto">An object containing the user's registration information, including email and password. Cannot be null.</param>
+        /// <returns>An IActionResult indicating the result of the registration operation. Returns 200 OK if registration is
+        /// successful, 400 Bad Request if the input is null, or 409 Conflict if a user with the specified email already
+        /// exists.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDto userDto)
         {
