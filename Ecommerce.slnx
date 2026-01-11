@@ -1,10 +1,35 @@
 <Solution>
+  <Folder Name="/ApiGateway/">
+    <Project Path="ApiGateway/ApiGateway.csproj" />
+  </Folder>
   <Folder Name="/Services/" />
   <Folder Name="/Services/IdentityService/">
-    <Project Path="API/IdentityService.API.csproj" />
-    <Project Path="Application/IdentityService.Application.csproj" />
-    <Project Path="Domain/IdentityService.Domain.csproj" />
-    <Project Path="Infrastructure/IdentityService.Infrastructure.csproj" />
-    <Project Path="Persistence/IdentityService.Persistence.csproj" />
+    <Project Path="IdentityService/IdentityService.API/IdentityService.API.csproj" Id="7e5ccf37-3f65-4b0b-b2e8-7574eb6ca9c5" />
+    <Project Path="IdentityService/IdentityService.Application/IdentityService.Application.csproj" Id="d9564b2e-0750-417f-85ef-d91285a94a77" />
+    <Project Path="IdentityService/IdentityService.Domain/IdentityService.Domain.csproj" Id="29691669-5020-468e-afef-417b42606c16" />
+    <Project Path="IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj" Id="cd475355-1d36-4c74-ad33-3837e70fa218" />
+    <Project Path="IdentityService/IdentityService.Persistence/IdentityService.Persistence.csproj" Id="16dc63ff-2ca6-4ed1-8fd2-9615b57a25c9" />
   </Folder>
+  <Folder Name="/Services/InventoryService/">
+    <Project Path="InventoryService/InventoryService.API/InventoryService.API.csproj" Id="d68439c5-0818-4b24-81bb-8e7e18ed0b78" />
+    <Project Path="InventoryService/InventoryService.Application/InventoryService.Application.csproj" Id="2291a499-cd14-4f99-b182-1474aaa49802" />
+    <Project Path="InventoryService/InventoryService.Domain/InventoryService.Domain.csproj" Id="52be5ffd-bdca-43ef-aa4e-65b66aa31c4c" />
+    <Project Path="InventoryService/InventoryService.Infrastructure/InventoryService.Infrastructure.csproj" Id="9ba6444c-4a8b-411a-9d88-e8faa54e21bb" />
+    <Project Path="InventoryService/InventoryService.Persistence/InventoryService.Persistence.csproj" Id="71f30ca8-b6b7-44b7-92f2-6ad727bb2d3b" />
+  </Folder>
+  <Folder Name="/Services/OrderService/">
+    <Project Path="OrderService/OrderService.API/OrderService.API.csproj" Id="d9c87433-92ae-426e-85c0-6d89f736652b" />
+    <Project Path="OrderService/OrderService.Application/OrderService.Application.csproj" Id="17e9b1d6-798a-479e-be6b-0c71afd60ac2" />
+    <Project Path="OrderService/OrderService.Domain/OrderService.Domain.csproj" Id="d6bee001-7a56-4bbf-8121-bc0149720205" />
+    <Project Path="OrderService/OrderService.Infrastructure/OrderService.Infrastructure.csproj" Id="afdba036-1220-4e25-b812-a63891008df0" />
+    <Project Path="OrderService/OrderService.Persistence/OrderService.Persistence.csproj" Id="21590133-698b-4c18-b9d5-5776cb0f41a5" />
+  </Folder>
+  <Folder Name="/Services/ProductService/">
+    <Project Path="ProductService/ProductService.API/ProductService.API.csproj" Id="e8d029d4-f380-4718-a823-f3795a75ec57" />
+    <Project Path="ProductService/ProductService.Application/ProductService.Application.csproj" Id="bd2703b7-4a47-4847-9f62-4045db568356" />
+    <Project Path="ProductService/ProductService.Domain/ProductService.Domain.csproj" Id="45f64b84-46e9-41bd-a99f-a1b25060d41d" />
+    <Project Path="ProductService/ProductService.Infrastructure/ProductService.Infrastructure.csproj" Id="681c4623-2632-4b07-b5ea-40efa59f33df" />
+    <Project Path="ProductService/ProductService.Persistence/ProductService.Persistence.csproj" Id="712d87d4-df42-4fc4-980b-cf0f6c8e74d3" />
+  </Folder>
+
 </Solution>
