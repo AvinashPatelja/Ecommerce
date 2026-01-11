@@ -82,7 +82,7 @@
 
     // 🔹 PUBLIC PRODUCTS
     {
-      "DownstreamPathTemplate": "/api/products",
+      "DownstreamPathTemplate": "/api/products/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -90,8 +90,11 @@
           "Port": 7002
         }
       ],
-      "UpstreamPathTemplate": "/products",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamPathTemplate": "/products/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "AddHeadersToDownstream": {
+        "Authorization": "{Authorization}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/orders/{everything}",
@@ -106,6 +109,9 @@
       "UpstreamHttpMethod": [ "POST", "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "isApproved": "True"
       }
     }
   ],
