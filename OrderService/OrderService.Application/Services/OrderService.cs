@@ -24,7 +24,7 @@ public class OrderService
         {
             Id = Guid.NewGuid(),
             UserId = userId,
-            Status = OrderStatus.Created.ToString(),
+            OrderStatus = OrderStatus.Created.ToString(),
             CreatedOn = DateTime.UtcNow,
             Items = new List<OrderItem>()
         };
@@ -62,15 +62,47 @@ public class OrderService
 
             if (!success)
             {
-                order.Status = OrderStatus.Cancelled.ToString();
+                order.OrderStatus = OrderStatus.Cancelled.ToString();
                 await _orderRepository.SaveChangesAsync();
                 throw new Exception("Inventory update failed");
             }
         }
 
-        order.Status = OrderStatus.Confirmed.ToString();
+        order.OrderStatus = OrderStatus.Confirmed.ToString();
         await _orderRepository.SaveChangesAsync();
 
         return order.Id;
     }
+    public async Task<OrderDto?> GetOrderByIdAsync(Guid orderId, Guid userId)
+    {
+        var order = await _orderRepository.GetOrderByIdAsync(orderId);
+
+        if (order == null || order.UserId != userId)
+            return null;
+
+        return MapToDto(order);
+    }
+    public async Task<List<OrderDto>> GetOrdersByUserAsync(Guid userId)
+    {
+        var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
+
+        return orders.Select(MapToDto).ToList();
+    }
+    private static OrderDto MapToDto(Order order)
+    {
+        return new OrderDto
+        {
+            Id = order.Id,
+            OrderStatus = order.OrderStatus,
+            TotalAmount = order.TotalAmount,
+            CreatedOn = order.CreatedOn,
+            Items = order.Items.Select(i => new OrderItemDto
+            {
+                ProductId = i.ProductId,
+                Quantity = i.Quantity,
+                Price = i.Price
+            }).ToList()
+        };
+    }
+
 }

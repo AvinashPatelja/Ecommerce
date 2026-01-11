@@ -5,6 +5,8 @@ using OrderService.Application.Interfaces;
 using OrderService.Persistence.Clients;
 using OrderService.Persistence.DbContexts;
 using OrderService.Persistence.Repositories;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddHttpClient<IInventoryClient, InventoryClient>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:5000"); // API Gateway
 });
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<OrderService.Application.Services.OrderService>();
 
@@ -36,7 +39,15 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateIssuerSigningKey = false,
-        ValidateLifetime = false
+        ValidateLifetime = false,
+
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)
+        ),
+
+        RoleClaimType = ClaimTypes.Role
     };
 });
 

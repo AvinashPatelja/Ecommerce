@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.DTOs;
 using OrderService.Application.Services;
+using System.Security.Claims;
 
 namespace OrderService.API.Controllers;
 
@@ -15,14 +16,40 @@ public class OrdersController : ControllerBase
     {
         _orderService = orderService;
     }
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
     {
-        var userId = Guid.Parse(User.FindFirst("sub")!.Value);
-
+        var userId = Guid.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+        );
         var orderId = await _orderService.CreateOrderAsync(userId, request);
         return Ok(new { OrderId = orderId });
+    }
+
+    [HttpGet("{orderId}")]
+    public async Task<IActionResult> GetOrderById(Guid orderId)
+    {
+        var userId = Guid.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+        );
+        var order = await _orderService.GetOrderByIdAsync(orderId, userId);
+
+        if (order == null)
+            return NotFound();
+
+        return Ok(order);
+    }
+
+    [HttpGet("my")]
+    public async Task<IActionResult> GetMyOrders()
+    {
+        var userId = Guid.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+        );
+        var orders = await _orderService.GetOrdersByUserAsync(userId);
+
+        return Ok(orders);
     }
 
     [HttpPost("debug")]
