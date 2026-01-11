@@ -1,7 +1,6 @@
 using InventoryService.Application.Interfaces;
 using InventoryService.Persistence;
 using InventoryService.Persistence.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
