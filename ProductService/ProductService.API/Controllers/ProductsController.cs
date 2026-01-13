@@ -20,8 +20,6 @@ namespace ProductService.API.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await _repo.GetActiveProductsAsync();
-            var authHeader = Request.Headers["Authorization"].ToString();
-            var test = User.Identity?.IsAuthenticated;
             var isApprovedClaim = User.Claims
                 .FirstOrDefault(c => c.Type == "isApproved")?.Value;
 
@@ -37,15 +35,6 @@ namespace ProductService.API.Controllers
             });
 
             return Ok(response);
-        }
-        [HttpPost("debug")]
-        public IActionResult Debug()
-        {
-            return Ok(new
-            {
-                IsAuthenticated = User.Identity?.IsAuthenticated,
-                Claims = User.Claims.Select(c => new { c.Type, c.Value })
-            });
         }
     }
 }

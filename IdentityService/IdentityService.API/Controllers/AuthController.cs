@@ -56,7 +56,7 @@ namespace IdentityService.API.Controllers
                 return Unauthorized("Invalid credentials");
 
             if (!user.IsApproved)
-                return Unauthorized("Account awaiting admin approval");
+                //return Unauthorized("Account awaiting admin approval");
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 return Unauthorized("Invalid credentials");
