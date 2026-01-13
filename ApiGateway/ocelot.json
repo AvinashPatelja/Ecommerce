@@ -65,7 +65,7 @@
 
     // 🔹 GENERIC IDENTITY ADMIN (MUST BE LAST)
     {
-      "DownstreamPathTemplate": "/api/admin/{everything}",
+      "DownstreamPathTemplate": "/api/admin/pending",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -73,10 +73,31 @@
           "Port": 7001
         }
       ],
-      "UpstreamPathTemplate": "/admin/{everything}",
+      "UpstreamPathTemplate": "/admin/pending",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "Admin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/approve/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7001
+        }
+      ],
+      "UpstreamPathTemplate": "/admin/approve/{userId}",
       "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "Admin"
       }
     },
 

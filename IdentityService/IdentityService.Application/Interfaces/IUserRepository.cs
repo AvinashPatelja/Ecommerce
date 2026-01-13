@@ -5,4 +5,6 @@ namespace IdentityService.Application.Interfaces;
 public interface IUserRepository : IGenericRepository<User>
 {
     Task<User?> GetByEmailAsync(string email);
+    Task<List<User>> GetPendingUsersAsync();
+    Task SaveChangesAsync();
 }
