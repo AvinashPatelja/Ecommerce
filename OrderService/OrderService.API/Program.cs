@@ -25,6 +25,10 @@ builder.Services.AddHttpClient<IInventoryClient, InventoryClient>(client =>
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<OrderService.Application.Services.OrderService>();
+builder.Services.AddHttpClient<IProductClient, ProductClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:5000"); // Gateway
+});
 
 builder.Services.AddAuthentication(options =>
 {

@@ -5,4 +5,5 @@ namespace ProductService.Application.Interfaces;
 public interface IProductRepository : IGenericRepository<Product>
 {
     Task<IEnumerable<Product>> GetActiveProductsAsync();
+    Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> productIds);
 }

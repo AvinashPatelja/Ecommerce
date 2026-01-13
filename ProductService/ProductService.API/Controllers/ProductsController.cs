@@ -36,5 +36,14 @@ namespace ProductService.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("names")]
+        public async Task<IActionResult> GetProductNames([FromBody] List<Guid> productIds)
+        {
+            var products = await _repo.GetByIdsAsync(productIds);
+
+            return Ok(products.ToDictionary(p => p.Id, p => p.Name));
+        }
+
     }
 }

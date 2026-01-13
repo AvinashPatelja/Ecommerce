@@ -19,4 +19,12 @@ public class ProductRepository
     {
         return await _context.Set<Product>().Where(p => p.IsActive).ToListAsync();
     }
+
+    public Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> productIds)
+    {
+        return _context.Set<Product>()
+            .Where(p => productIds.Contains(p.Id))
+            .ToListAsync()
+            .ContinueWith(t => (IEnumerable<Product>)t.Result);
+    }
 }

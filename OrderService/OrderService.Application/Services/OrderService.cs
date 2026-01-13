@@ -9,13 +9,16 @@ public class OrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryClient _inventoryClient;
+    private readonly IProductClient _productClient;
 
     public OrderService(
         IOrderRepository orderRepository,
-        IInventoryClient inventoryClient)
+        IInventoryClient inventoryClient,
+        IProductClient productClient)
     {
         _orderRepository = orderRepository;
         _inventoryClient = inventoryClient;
+        _productClient = productClient;
     }
 
     public async Task<Guid> CreateOrderAsync(Guid userId, CreateOrderRequest request)
@@ -80,15 +83,40 @@ public class OrderService
         if (order == null || order.UserId != userId)
             return null;
 
-        return MapToDto(order);
+        // 1️⃣ Collect productIds from this order
+        var productIds = order.Items
+            .Select(i => i.ProductId)
+            .Distinct()
+            .ToList();
+
+        // 2️⃣ Fetch product names from ProductService
+        var productNames = await _productClient.GetProductNamesAsync(productIds);
+
+        // 3️⃣ Map enriched DTO
+        return MapToDto(order, productNames);
     }
+
     public async Task<List<OrderDto>> GetOrdersByUserAsync(Guid userId)
     {
         var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
 
-        return orders.Select(MapToDto).ToList();
+        // 1️⃣ Collect all productIds from orders
+        var productIds = orders
+            .SelectMany(o => o.Items)
+            .Select(i => i.ProductId)
+            .Distinct()
+            .ToList();
+
+        // 2️⃣ Fetch product names from ProductService
+        var productNames = await _productClient.GetProductNamesAsync(productIds);
+
+        // 3️⃣ Map orders with product names
+        return orders.Select(o => MapToDto(o, productNames)).ToList();
     }
-    private static OrderDto MapToDto(Order order)
+
+    private static OrderDto MapToDto(
+    Order order,
+    Dictionary<Guid, string> productNames)
     {
         return new OrderDto
         {
@@ -99,10 +127,12 @@ public class OrderService
             Items = order.Items.Select(i => new OrderItemDto
             {
                 ProductId = i.ProductId,
+                ProductName = productNames.ContainsKey(i.ProductId)
+                    ? productNames[i.ProductId]
+                    : "Unknown Product",
                 Quantity = i.Quantity,
                 Price = i.Price
             }).ToList()
         };
     }
-
 }
