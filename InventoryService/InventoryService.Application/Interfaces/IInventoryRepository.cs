@@ -7,4 +7,5 @@ public interface IInventoryRepository
     Task<Inventory?> GetByProductIdAsync(Guid productId);
     Task AddAsync(Inventory inventory);
     Task UpdateAsync(Inventory inventory);
+    Task<int> GetStockAsync(Guid productId);
 }

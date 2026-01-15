@@ -34,34 +34,48 @@ public class OrderService
 
         decimal totalAmount = 0;
 
+        // 1️⃣ Collect productIds ONCE
+        var productIds = request.Items
+            .Select(i => i.ProductId)
+            .Distinct()
+            .ToList();
+
+        // 2️⃣ SINGLE call to Product Service
+        var products = await _productClient.GetProductsAsync(productIds);
+
+        var productMap = products.ToDictionary(p => p.Id);
+
+        // 3️⃣ Build order items using REAL price
         foreach (var item in request.Items)
         {
-            // Price will later come from Product Service
-            decimal price = 100; // temporary placeholder
+            if (!productMap.TryGetValue(item.ProductId, out var product))
+                throw new Exception("Product not found");
 
-            order.Items.Add(new OrderItem
+            var orderItem = new OrderItem
             {
                 Id = Guid.NewGuid(),
                 OrderId = order.Id,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
-                Price = price
-            });
+                Price = product.Price // ✅ FIX: real price from Product Service
+            };
 
-            totalAmount += price * item.Quantity;
+            order.Items.Add(orderItem);
+            totalAmount += product.Price * item.Quantity;
         }
 
         order.TotalAmount = totalAmount;
 
+        // 4️⃣ Save order first (same as your current flow)
         await _orderRepository.AddOrderAsync(order);
         await _orderRepository.SaveChangesAsync();
 
-        // Reduce inventory
+        // 5️⃣ Reduce inventory (UNCHANGED LOGIC)
         foreach (var item in request.Items)
         {
             var success = await _inventoryClient.UpdateInventoryAsync(
                 item.ProductId,
-                -item.Quantity);
+                item.Quantity);
 
             if (!success)
             {
@@ -71,6 +85,7 @@ public class OrderService
             }
         }
 
+        // 6️⃣ Confirm order
         order.OrderStatus = OrderStatus.Confirmed.ToString();
         await _orderRepository.SaveChangesAsync();
 
@@ -83,16 +98,16 @@ public class OrderService
         if (order == null || order.UserId != userId)
             return null;
 
-        // 1️⃣ Collect productIds from this order
+        // 1️⃣ Collect productIds
         var productIds = order.Items
             .Select(i => i.ProductId)
             .Distinct()
             .ToList();
 
-        // 2️⃣ Fetch product names from ProductService
+        // 2️⃣ Fetch ONLY product names
         var productNames = await _productClient.GetProductNamesAsync(productIds);
 
-        // 3️⃣ Map enriched DTO
+        // 3️⃣ Map DTO
         return MapToDto(order, productNames);
     }
 
@@ -127,7 +142,7 @@ public class OrderService
             Items = order.Items.Select(i => new OrderItemDto
             {
                 ProductId = i.ProductId,
-                ProductName = productNames.ContainsKey(i.ProductId)
+                Name = productNames.ContainsKey(i.ProductId)
                     ? productNames[i.ProductId]
                     : "Unknown Product",
                 Quantity = i.Quantity,

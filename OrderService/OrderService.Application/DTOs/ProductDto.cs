@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OrderService.Application.DTOs
 {
-    public class OrderItemDto
+    public class ProductDto
     {
-        public Guid ProductId { get; set; }
-        public string Name { get; set; }
-        public int Quantity { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; } = default!;
         public decimal Price { get; set; }
+        public bool IsActive { get; set; }
     }
 }

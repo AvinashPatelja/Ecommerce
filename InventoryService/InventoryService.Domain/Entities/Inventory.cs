@@ -6,4 +6,5 @@ public class Inventory
     public Guid ProductId { get; set; }
     public int AvailableQuantity { get; set; }
     public DateTime LastUpdatedOn { get; set; }
+    public string AuditDescription { get; set; } = default!;
 }

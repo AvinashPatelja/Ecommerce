@@ -32,7 +32,7 @@ public class InventoryClient : IInventoryClient
         }
 
         var response = await _httpClient.PostAsJsonAsync(
-            "/admin/inventory/update",
+            "/order/inventory/update",
             new
             {
                 ProductId = productId,

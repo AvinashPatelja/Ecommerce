@@ -1,7 +1,9 @@
 {
   "Routes": [
 
-    // 🔹 AUTH (PUBLIC)
+    // ================================
+    // 🔹 AUTH SERVICE (PUBLIC)
+    // ================================
     {
       "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "https",
@@ -15,7 +17,9 @@
       "UpstreamHttpMethod": [ "POST", "GET" ]
     },
 
-    // 🔹 PRODUCT ADMIN
+    // ================================
+    // 🔹 ADMIN – PRODUCT MANAGEMENT
+    // ================================
     {
       "DownstreamPathTemplate": "/api/admin/products",
       "DownstreamScheme": "https",
@@ -26,13 +30,30 @@
         }
       ],
       "UpstreamPathTemplate": "/admin/products",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/products/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7002
+        }
+      ],
+      "UpstreamPathTemplate": "/admin/products/{id}",
+      "UpstreamHttpMethod": [ "PUT", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       }
     },
 
-    // 🔹 INVENTORY ADMIN (UPDATE STOCK)
+    // ================================
+    // 🔹 ADMIN – INVENTORY MANAGEMENT
+    // ================================
     {
       "DownstreamPathTemplate": "/api/admin/inventory/update",
       "DownstreamScheme": "https",
@@ -49,7 +70,28 @@
       }
     },
 
-    // 🔹 INVENTORY PUBLIC (VIEW STOCK)
+    // ================================
+    // 🔹 ORDER – INVENTORY REDUCE
+    // ================================
+    {
+      "DownstreamPathTemplate": "/api/order/inventory/update",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7003
+        }
+      ],
+      "UpstreamPathTemplate": "/order/inventory/update",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+
+    // ================================
+    // 🔹 INVENTORY – PUBLIC VIEW
+    // ================================
     {
       "DownstreamPathTemplate": "/api/admin/inventory/{productId}",
       "DownstreamScheme": "https",
@@ -63,7 +105,9 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
 
-    // 🔹 GENERIC IDENTITY ADMIN (MUST BE LAST)
+    // ================================
+    // 🔹 ADMIN – USER APPROVAL (IDENTITY)
+    // ================================
     {
       "DownstreamPathTemplate": "/api/admin/pending",
       "DownstreamScheme": "https",
@@ -101,7 +145,9 @@
       }
     },
 
+    // ================================
     // 🔹 PUBLIC PRODUCTS
+    // ================================
     {
       "DownstreamPathTemplate": "/api/products/{everything}",
       "DownstreamScheme": "https",
@@ -117,6 +163,10 @@
         "Authorization": "{Authorization}"
       }
     },
+
+    // ================================
+    // 🔹 ORDERS (APPROVED USERS ONLY)
+    // ================================
     {
       "DownstreamPathTemplate": "/api/orders/{everything}",
       "DownstreamScheme": "https",
@@ -136,6 +186,7 @@
       }
     }
   ],
+
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5000"
   }

@@ -1,4 +1,5 @@
 using InventoryService.Application.Interfaces;
+using InventoryService.Application.Services;
 using InventoryService.Persistence;
 using InventoryService.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryService, InventoryServices>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

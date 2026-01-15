@@ -1,5 +1,6 @@
 ﻿using InventoryService.Application.DTOs;
 using InventoryService.Application.Interfaces;
+using InventoryService.Application.Services;
 using InventoryService.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 public class AdminInventoryController : ControllerBase
 {
     private readonly IInventoryRepository _repo;
-
     public AdminInventoryController(IInventoryRepository repo)
     {
         _repo = repo;
@@ -28,6 +28,7 @@ public class AdminInventoryController : ControllerBase
                 Id = Guid.NewGuid(),
                 ProductId = dto.ProductId,
                 AvailableQuantity = dto.Quantity,
+                AuditDescription = "Stock added by admin",
                 LastUpdatedOn = DateTime.UtcNow
             };
             await _repo.AddAsync(inventory);
@@ -36,16 +37,17 @@ public class AdminInventoryController : ControllerBase
         {
             inventory.AvailableQuantity += dto.Quantity;
             inventory.LastUpdatedOn = DateTime.UtcNow;
+            inventory.AuditDescription = "Stock added by admin";
             await _repo.UpdateAsync(inventory);
         }
 
         return Ok(inventory);
-    }
+    }    
+
     [HttpGet("{productId}")]
     public async Task<IActionResult> GetStock(Guid productId)
     {
         var inventory = await _repo.GetByProductIdAsync(productId);
         return Ok(inventory?.AvailableQuantity ?? 0);
     }
-
 }
