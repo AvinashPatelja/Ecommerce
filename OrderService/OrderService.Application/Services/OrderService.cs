@@ -5,7 +5,7 @@ using OrderService.Domain.Enums;
 
 namespace OrderService.Application.Services;
 
-public class OrderService
+public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryClient _inventoryClient;
@@ -149,5 +149,27 @@ public class OrderService
                 Price = i.Price
             }).ToList()
         };
+    }
+
+    public async Task<List<Order>> GetAllOrdersAsync()
+    {
+        return await _orderRepository.GetAllOrdersAsync();
+    }
+
+    public async Task<Order?> GetOrderByIdAsync(Guid orderId)
+    {
+        return await _orderRepository.GetOrderByIdAsync(orderId);
+    }
+
+    public async Task UpdateOrderStatusAsync(Guid orderId, OrderStatus status)
+    {
+        var order = await _orderRepository.GetOrderByIdAsync(orderId);
+
+        if (order == null)
+            throw new Exception("Order not found");
+
+        order.OrderStatus = status.ToString();
+
+        await _orderRepository.UpdateOrderStatusAsync(order);
     }
 }

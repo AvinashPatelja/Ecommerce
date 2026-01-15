@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Interfaces;
 using OrderService.Domain.Entities;
+using OrderService.Domain.Enums;
 using OrderService.Persistence.DbContexts;
 
 namespace OrderService.Persistence.Repositories;
@@ -17,6 +18,12 @@ public class OrderRepository : IOrderRepository
     public async Task AddOrderAsync(Order order)
     {
         await _context.Orders.AddAsync(order);
+    }
+
+    public Task<List<Order>> GetAllOrdersAsync()
+    {
+        return _context.Orders.Include(o => o.Items)
+            .OrderByDescending(o => o.CreatedOn).ToListAsync();
     }
 
     public async Task<Order?> GetOrderByIdAsync(Guid orderId)
@@ -37,6 +44,12 @@ public class OrderRepository : IOrderRepository
 
     public async Task SaveChangesAsync()
     {
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateOrderStatusAsync(Order order)
+    {
+        _context.Orders.Update(order);
         await _context.SaveChangesAsync();
     }
 }
