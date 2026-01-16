@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductService.Application.Interfaces;
+using ProductService.Application.Services;
 using ProductService.Persistence;
 using ProductService.Persistence.Repositories;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductServices>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -24,7 +26,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    // Trust the gateway – extract claims only
+    // Trust the gateway ï¿½ extract claims only
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
@@ -42,8 +44,20 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();    
+builder.Services.AddAuthorization();
 
+// Add CORS to allow React app to access images
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,6 +74,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS
+app.UseCors("AllowReactApp");
+
+// Enable static files (for serving images)
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

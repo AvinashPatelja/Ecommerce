@@ -165,6 +165,22 @@
     },
 
     // ================================
+    // 🔹 PRODUCT IMAGES (STATIC FILES)
+    // ================================
+    {
+      "DownstreamPathTemplate": "/images/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7002
+        }
+      ],
+      "UpstreamPathTemplate": "/images/{everything}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+    // ================================
     // 🔹 ORDERS (APPROVED USERS ONLY)
     // ================================
     {

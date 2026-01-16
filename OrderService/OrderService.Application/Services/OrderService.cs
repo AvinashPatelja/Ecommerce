@@ -5,13 +5,13 @@ using OrderService.Domain.Enums;
 
 namespace OrderService.Application.Services;
 
-public class OrderService : IOrderService
+public class OrderServices : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryClient _inventoryClient;
     private readonly IProductClient _productClient;
 
-    public OrderService(
+    public OrderServices(
         IOrderRepository orderRepository,
         IInventoryClient inventoryClient,
         IProductClient productClient)

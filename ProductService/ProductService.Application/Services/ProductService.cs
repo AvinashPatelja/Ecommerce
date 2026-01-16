@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace ProductService.Application.Services
 {
-    public class ProductService : IProductService
+    public class ProductServices : IProductService
     {
         private readonly IProductRepository _repository;
 
-        public ProductService(IProductRepository repository)
+        public ProductServices(IProductRepository repository)
         {
             _repository = repository;
         }
@@ -26,6 +26,7 @@ namespace ProductService.Application.Services
                 Name = dto.Name,
                 Description = dto.Description,
                 Price = dto.Price,
+                ImageUrl = dto.ImageUrl,
                 IsActive = true,
                 CreatedOn = DateTime.UtcNow
             };
@@ -45,6 +46,7 @@ namespace ProductService.Application.Services
             product.Name = dto.Name;
             product.Description = dto.Description;
             product.Price = dto.Price;
+            product.ImageUrl = dto.ImageUrl;
 
             await _repository.UpdateAsync(product);
         }

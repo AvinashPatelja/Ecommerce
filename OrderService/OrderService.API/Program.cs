@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OrderService.Application.Interfaces;
+using OrderService.Application.Services;
 using OrderService.Persistence.Clients;
 using OrderService.Persistence.DbContexts;
 using OrderService.Persistence.Repositories;
@@ -20,14 +21,14 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddHttpClient<IInventoryClient, InventoryClient>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5000"); // API Gateway
+    client.BaseAddress = new Uri("http://localhost:5136"); // API Gateway
 });
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<OrderService.Application.Services.OrderService>();
+builder.Services.AddScoped<IOrderService, OrderServices>();
 builder.Services.AddHttpClient<IProductClient, ProductClient>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5000"); // Gateway
+    client.BaseAddress = new Uri("http://localhost:5136"); // Gateway
 });
 
 builder.Services.AddAuthentication(options =>
@@ -37,7 +38,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    // Trust the gateway – extract claims only
+    // Trust the gateway ï¿½ extract claims only
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,

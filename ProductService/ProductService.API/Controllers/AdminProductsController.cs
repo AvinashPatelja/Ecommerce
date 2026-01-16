@@ -4,7 +4,7 @@ using ProductService.Application.DTOs;
 using ProductService.Application.Services;
 
 [ApiController]
-[Route("admin/products")]
+[Route("api/admin/products")]
 public class AdminProductController : ControllerBase
 {
     private readonly IProductService _productService;

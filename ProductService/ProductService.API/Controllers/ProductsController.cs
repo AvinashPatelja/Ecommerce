@@ -31,6 +31,7 @@ namespace ProductService.API.Controllers
                 Name = p.Name,
                 Description = p.Description,
                 Price = isApprovedUser ? p.Price : null,
+                ImageUrl = p.ImageUrl,
                 IsPriceVisible = isApprovedUser
             });
 

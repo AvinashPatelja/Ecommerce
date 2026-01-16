@@ -10,9 +10,9 @@ namespace OrderService.API.Controllers;
 [Route("api/orders")]
 public class OrdersController : ControllerBase
 {
-    private readonly OrderService.Application.Services.OrderService _orderService;
+    private readonly IOrderService _orderService;
 
-    public OrdersController(OrderService.Application.Services.OrderService orderService)
+    public OrdersController(IOrderService orderService)
     {
         _orderService = orderService;
     }
