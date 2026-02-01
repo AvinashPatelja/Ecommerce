@@ -113,20 +113,27 @@ public class OrderServices : IOrderService
 
     public async Task<List<OrderDto>> GetOrdersByUserAsync(Guid userId)
     {
-        var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
+        try
+        {
+            var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
 
-        // 1️⃣ Collect all productIds from orders
-        var productIds = orders
-            .SelectMany(o => o.Items)
-            .Select(i => i.ProductId)
-            .Distinct()
-            .ToList();
+            // 1️⃣ Collect all productIds from orders
+            var productIds = orders
+                .SelectMany(o => o.Items)
+                .Select(i => i.ProductId)
+                .Distinct()
+                .ToList();
 
-        // 2️⃣ Fetch product names from ProductService
-        var productNames = await _productClient.GetProductNamesAsync(productIds);
+            // 2️⃣ Fetch product names from ProductService
+            var productNames = await _productClient.GetProductNamesAsync(productIds);
 
-        // 3️⃣ Map orders with product names
-        return orders.Select(o => MapToDto(o, productNames)).ToList();
+            // 3️⃣ Map orders with product names
+            return orders.Select(o => MapToDto(o, productNames)).ToList();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
     private static OrderDto MapToDto(

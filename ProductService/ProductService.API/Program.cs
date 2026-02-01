@@ -74,6 +74,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UsePathBase("/product");
 
 // Enable CORS
 app.UseCors("AllowReactApp");

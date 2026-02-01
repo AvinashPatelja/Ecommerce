@@ -22,6 +22,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddHttpClient<IInventoryClient, InventoryClient>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5136"); // API Gateway
+    //client.BaseAddress = new Uri("http://localhost:446/inventory/");
+    //client.BaseAddress = new Uri("http://122.166.212.55:446/inventory/");
 });
 builder.Services.AddHttpContextAccessor();
 
@@ -29,6 +31,8 @@ builder.Services.AddScoped<IOrderService, OrderServices>();
 builder.Services.AddHttpClient<IProductClient, ProductClient>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5136"); // Gateway
+    //client.BaseAddress = new Uri("http://localhost:446/product/");
+    //client.BaseAddress = new Uri("https://122.166.212.55:446/gateway/products/");
 });
 
 builder.Services.AddAuthentication(options =>
@@ -93,7 +97,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
+app.UsePathBase("/order");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

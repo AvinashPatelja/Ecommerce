@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrderService.Application.DTOs;
 using OrderService.Application.Services;
 using System.Security.Claims;
@@ -47,6 +48,8 @@ public class OrdersController : ControllerBase
         var userId = Guid.Parse(
             User.FindFirst(ClaimTypes.NameIdentifier)!.Value
         );
+        //Guid userId = new Guid("8CFF8000-66D0-45F2-B472-08DE4F701925");
+
         var orders = await _orderService.GetOrdersByUserAsync(userId);
 
         return Ok(orders);

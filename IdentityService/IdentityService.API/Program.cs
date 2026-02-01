@@ -56,6 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UsePathBase("/identity");
 
 app.UseAuthentication();
 app.UseAuthorization();

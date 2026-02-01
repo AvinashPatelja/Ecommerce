@@ -34,7 +34,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins("http://localhost:5173", "http://localhost:89", "http://122.166.212.55:89")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -46,10 +46,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddOcelot();
 
 var app = builder.Build();
+app.UsePathBase("/gateway");
 app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
-
 await app.UseOcelot();
 
 app.Run();

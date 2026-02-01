@@ -237,3 +237,227 @@
     "BaseUrl": "https://localhost:5000"
   }
 }
+//{
+//  "Routes": [
+
+//    // ================================
+//    // 🔹 AUTH SERVICE (PUBLIC)
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/identity/api/auth/{everything}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/auth/{everything}",
+//      "UpstreamHttpMethod": [ "POST", "GET" ]
+//    },
+
+//    // ================================
+//    // 🔹 ADMIN – PRODUCT MANAGEMENT
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/product/api/admin/products",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/products",
+//      "UpstreamHttpMethod": [ "POST", "GET" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      }
+//    },
+//    {
+//      "DownstreamPathTemplate": "/product/api/admin/products/{id}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/products/{id}",
+//      "UpstreamHttpMethod": [ "PUT", "PATCH" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      }
+//    },
+
+//    // ================================
+//    // 🔹 PUBLIC PRODUCTS
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/product/api/products/{everything}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/products/{everything}",
+//      "UpstreamHttpMethod": [ "GET", "POST" ],
+//      "AddHeadersToDownstream": {
+//        "Authorization": "{Authorization}"
+//      }
+//    },
+
+//    // ================================
+//    // 🔹 PRODUCT IMAGES (STATIC FILES)
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/product/images/{everything}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/images/{everything}",
+//      "UpstreamHttpMethod": [ "GET" ]
+//    },
+
+//    // ================================
+//    // 🔹 ADMIN – INVENTORY MANAGEMENT
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/inventory/api/admin/inventory/update",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/inventory/update",
+//      "UpstreamHttpMethod": [ "POST" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      }
+//    },
+
+//    // ================================
+//    // 🔹 INVENTORY – PUBLIC VIEW
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/inventory/api/admin/inventory/{productId}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/inventory/{productId}",
+//      "UpstreamHttpMethod": [ "GET" ]
+//    },
+
+//    // ================================
+//    // 🔹 ADMIN – USER APPROVAL (IDENTITY)
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/identity/api/admin/pending",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/pending",
+//      "UpstreamHttpMethod": [ "GET" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      },
+//      "RouteClaimsRequirement": {
+//        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "Admin"
+//      }
+//    },
+//    {
+//      "DownstreamPathTemplate": "/identity/api/admin/approve/{userId}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/approve/{userId}",
+//      "UpstreamHttpMethod": [ "POST" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      },
+//      "RouteClaimsRequirement": {
+//        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "Admin"
+//      }
+//    },
+
+//    // ================================
+//    // 🔹 ADMIN – ORDER MONITORING
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/order/api/admin/orders",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/orders",
+//      "UpstreamHttpMethod": [ "GET" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      }
+//    },
+//    {
+//      "DownstreamPathTemplate": "/order/api/admin/orders/{orderId}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/admin/orders/{orderId}",
+//      "UpstreamHttpMethod": [ "GET", "PATCH" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      }
+//    },
+
+//    // ================================
+//    // 🔹 ORDERS (APPROVED USERS)
+//    // ================================
+//    {
+//      "DownstreamPathTemplate": "/order/api/orders/{everything}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 446
+//        }
+//      ],
+//      "UpstreamPathTemplate": "/orders/{everything}",
+//      "UpstreamHttpMethod": [ "POST", "GET" ],
+//      "AuthenticationOptions": {
+//        "AuthenticationProviderKey": "Bearer"
+//      },
+//      "RouteClaimsRequirement": {
+//        "isApproved": "True"
+//      }
+//    }
+//  ],
+
+//  "GlobalConfiguration": {
+//    "BaseUrl": "http://localhost:446/gateway"
+//  }
+//}
